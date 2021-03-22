@@ -51,6 +51,58 @@
 /* Private function prototypes -----------------------------------------------*/
 void SystemClock_Config(void);
 /* USER CODE BEGIN PFP */
+#include <stdio.h>
+int fputc(int ch, FILE *f)
+{
+    HAL_UART_Transmit(&huart1 , (uint8_t *)&ch, 1 , 0xffff);
+    return ch;
+}
+#define SHOWME  printf("---%s--%d---\r\n",__FUNCTION__,__LINE__);
+
+void TEST_LOOP_IO(void)
+{
+	static int cnt=0;
+	HAL_Delay(200);
+
+	if(++cnt<6)
+	{
+		HAL_GPIO_TogglePin(LED_GPIO_Port, LED_Pin);
+		return;
+	}
+	
+	if(HAL_GPIO_ReadPin(KEY_GPIO_Port, KEY_Pin)==GPIO_PIN_RESET)
+			HAL_GPIO_WritePin(LED_GPIO_Port, LED_Pin, GPIO_PIN_RESET);//ON
+	else
+		  HAL_GPIO_WritePin(LED_GPIO_Port, LED_Pin, GPIO_PIN_SET);//OFF
+
+}
+
+void TSET_TIMER(void)
+{
+	HAL_TIM_Base_Start_IT(&htim2);
+  HAL_TIM_Base_Start_IT(&htim1);
+}
+
+char value=0;
+void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
+{
+#if 0	
+//1s
+    if (htim == (&htim2))
+    {
+      HAL_GPIO_TogglePin(LED_GPIO_Port, LED_Pin);
+			value = value?0:1;
+    }
+#else	
+//0.1S
+		if (htim == (&htim1))
+    {
+      HAL_GPIO_TogglePin(LED_GPIO_Port, LED_Pin);
+			value = value?0:1;
+    }
+#endif		
+}
+
 
 /* USER CODE END PFP */
 
@@ -63,6 +115,7 @@ void SystemClock_Config(void);
   * @brief  The application entry point.
   * @retval int
   */
+#include "tuyamodeuart.h"
 int main(void)
 {
   /* USER CODE BEGIN 1 */
@@ -92,15 +145,18 @@ int main(void)
   MX_USART1_UART_Init();
   MX_USART2_UART_Init();
   /* USER CODE BEGIN 2 */
-
+  //TSET_TIMER();
   /* USER CODE END 2 */
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
+	tuyamode_init();
+	SHOWME
   while (1)
   {
     /* USER CODE END WHILE */
-
+    //TEST_LOOP_IO();
+		TEST_UARTTXRX();
     /* USER CODE BEGIN 3 */
   }
   /* USER CODE END 3 */

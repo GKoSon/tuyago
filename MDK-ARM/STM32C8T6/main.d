@@ -31,3 +31,6 @@ stm32c8t6\main.o: ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_uart.h
 stm32c8t6\main.o: ../Core/Inc/tim.h
 stm32c8t6\main.o: ../Core/Inc/usart.h
 stm32c8t6\main.o: ../Core/Inc/gpio.h
+stm32c8t6\main.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdio.h
+stm32c8t6\main.o: ..\gdeveloper\tuyamodeuart.h
+stm32c8t6\main.o: ..\gdeveloper\gkbaseusart.h
