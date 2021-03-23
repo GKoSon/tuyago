@@ -1,3 +1,3 @@
-[defect NO.]简单完成IO测试/TIMER测试/UAR的TXRX 完成一个基本工程
+[defect NO.]完成timer的链表
 [modify comment]
 [bin source]0

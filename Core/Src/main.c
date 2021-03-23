@@ -59,6 +59,8 @@ int fputc(int ch, FILE *f)
 }
 #define SHOWME  printf("---%s--%d---\r\n",__FUNCTION__,__LINE__);
 
+
+
 void TEST_LOOP_IO(void)
 {
 	static int cnt=0;
@@ -77,10 +79,30 @@ void TEST_LOOP_IO(void)
 
 }
 
+
+#include "gktimer.h"
+uint8_t production_timer;
+void production_timeout_handler(void)
+{
+
+	static char cnt =0;
+	if(++cnt==6)gkTimer.stop(production_timer);
+	SHOWME
+  HAL_GPIO_TogglePin(LED_GPIO_Port, LED_Pin);
+
+}
+void TEST_GKTIME(void)
+{
+	static gtime_type  node;
+  production_timer = gkTimer.creat(&node,10, 1, production_timeout_handler);
+}
+
 void TSET_TIMER(void)
 {
 	HAL_TIM_Base_Start_IT(&htim2);
   HAL_TIM_Base_Start_IT(&htim1);
+	
+	TEST_GKTIME();
 }
 
 char value=0;
@@ -95,11 +117,12 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
     }
 #else	
 //0.1S
-		if (htim == (&htim1))
-    {
-      HAL_GPIO_TogglePin(LED_GPIO_Port, LED_Pin);
-			value = value?0:1;
-    }
+	if (htim == (&htim1))
+//    {
+//      HAL_GPIO_TogglePin(LED_GPIO_Port, LED_Pin);
+//			value = value?0:1;
+//    }
+		gtimer_loop();
 #endif		
 }
 
@@ -145,7 +168,7 @@ int main(void)
   MX_USART1_UART_Init();
   MX_USART2_UART_Init();
   /* USER CODE BEGIN 2 */
-  //TSET_TIMER();
+  TSET_TIMER();
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -156,7 +179,7 @@ int main(void)
   {
     /* USER CODE END WHILE */
     //TEST_LOOP_IO();
-		TEST_UARTTXRX();
+		//TEST_UARTTXRX();
     /* USER CODE BEGIN 3 */
   }
   /* USER CODE END 3 */

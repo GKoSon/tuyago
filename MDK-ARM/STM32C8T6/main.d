@@ -32,5 +32,9 @@ stm32c8t6\main.o: ../Core/Inc/tim.h
 stm32c8t6\main.o: ../Core/Inc/usart.h
 stm32c8t6\main.o: ../Core/Inc/gpio.h
 stm32c8t6\main.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdio.h
+stm32c8t6\main.o: ..\gdeveloper\gktimer.h
+stm32c8t6\main.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdlib.h
+stm32c8t6\main.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\string.h
+stm32c8t6\main.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdbool.h
 stm32c8t6\main.o: ..\gdeveloper\tuyamodeuart.h
 stm32c8t6\main.o: ..\gdeveloper\gkbaseusart.h

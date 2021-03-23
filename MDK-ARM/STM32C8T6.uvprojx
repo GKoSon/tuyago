@@ -521,6 +521,11 @@
               <FileType>1</FileType>
               <FilePath>..\gdeveloper\tuyamodeuart.c</FilePath>
             </File>
+            <File>
+              <FileName>gktimer.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\gdeveloper\gktimer.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>
