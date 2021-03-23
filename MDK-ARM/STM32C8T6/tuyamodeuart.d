@@ -32,3 +32,4 @@ stm32c8t6\tuyamodeuart.o: ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_tim.
 stm32c8t6\tuyamodeuart.o: ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_tim_ex.h
 stm32c8t6\tuyamodeuart.o: ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_uart.h
 stm32c8t6\tuyamodeuart.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\string.h
+stm32c8t6\tuyamodeuart.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdio.h

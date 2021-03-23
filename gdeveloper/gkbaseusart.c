@@ -25,7 +25,7 @@ uint8_t GK_usart_init(GK_USARTBASE_TYPE *myuart,uint8_t usartid,uint8_t * buf,rx
 
 void GK_usart_clear(GK_USARTBASE_TYPE *myuart)
 {
-	memset(&myuart->rx_len,0,myuart->rx_len);
+	memset(myuart->rxBuf,0,myuart->rx_len);
 	myuart->rx_len=0;
 	myuart->received2idle=0;
 }
@@ -51,7 +51,7 @@ void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart) //这里扩展一下！�
   if(huart->Instance == USART2) 
 	{ 
 		GKU2.rxBuf[GKU2.rx_len++%500]=GKU2.one;//V1.0处理 可以 不要 
-        GKU2.rxf(GKU2.one); ;//V2.0处理
+        if(GKU2.rxf)    GKU2.rxf(GKU2.one); ;//V2.0处理
 		HAL_UART_Receive_IT(huart, &GKU2.one, 1) ; 
 	}
 	else if(huart->Instance == USART1) 

@@ -61,6 +61,10 @@ int fputc(int ch, FILE *f)
 
 
 
+
+
+
+
 void TEST_LOOP_IO(void)
 {
 	static int cnt=0;
@@ -78,6 +82,10 @@ void TEST_LOOP_IO(void)
 		  HAL_GPIO_WritePin(LED_GPIO_Port, LED_Pin, GPIO_PIN_SET);//OFF
 
 }
+
+
+
+
 
 
 #include "gktimer.h"
@@ -118,26 +126,19 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 #else	
 //0.1S
 	if (htim == (&htim1))
-//    {
-//      HAL_GPIO_TogglePin(LED_GPIO_Port, LED_Pin);
-//			value = value?0:1;
-//    }
-		gtimer_loop();
+    {
+      HAL_GPIO_TogglePin(LED_GPIO_Port, LED_Pin);
+			value = value?0:1;
+    }
+//		gtimer_loop();
 #endif		
 }
 
 
-/* USER CODE END PFP */
 
-/* Private user code ---------------------------------------------------------*/
-/* USER CODE BEGIN 0 */
 
-/* USER CODE END 0 */
 
-/**
-  * @brief  The application entry point.
-  * @retval int
-  */
+
 #include "tuyamodeuart.h"
 int main(void)
 {
@@ -180,6 +181,7 @@ int main(void)
     /* USER CODE END WHILE */
     //TEST_LOOP_IO();
 		//TEST_UARTTXRX();
+		 TEST_UARTRX();
     /* USER CODE BEGIN 3 */
   }
   /* USER CODE END 3 */
