@@ -97,7 +97,6 @@ const DOWNLOAD_CMD_S download_cmd[] =
   {DPID_VOICE_TIMES, DP_TYPE_VALUE},
   {DPID_LIGHT, DP_TYPE_BOOL},
   {DPID_SWITCH, DP_TYPE_BOOL},
-  {DPID_ANGRY, DP_TYPE_BOOL},
 };
 
 
@@ -114,8 +113,10 @@ const DOWNLOAD_CMD_S download_cmd[] =
  */
 void uart_transmit_output(unsigned char value)
 {
-    #error "请将MCU串口发送函数填入该函数,并删除该行"
-    
+//    #error "请将MCU串口发送函数填入该函数,并删除该行"
+	extern void tuyamode_tx(unsigned char *TX , unsigned short TXlen);
+	unsigned char data = value;
+	tuyamode_tx(&data,1);
 /*
     //Example:
     extern void Uart_PutChar(unsigned char value);
@@ -149,7 +150,9 @@ void uart_transmit_output(unsigned char value)
  */
 void all_data_update(void)
 {
-    #error "请在此处理可下发可上报数据及只上报数据示例,处理完成后删除该行"
+	    mcu_dp_bool_update(DPID_SWITCH,0); 
+	    mcu_dp_value_update(DPID_BATTERY_PERCENTAGE,80); //VALUE型数据上报;
+//    #error "请在此处理可下发可上报数据及只上报数据示例,处理完成后删除该行"
     /*
     //此代码为平台自动生成，请按照实际数据修改每个可下发可上报函数和只上报函数
     mcu_dp_raw_update(DPID_MEAL_PLAN,当前喂食计划指针,当前喂食计划数据长度); //RAW型数据上报;
@@ -480,6 +483,8 @@ static unsigned char dp_download_light_handle(const unsigned char value[], unsig
 返回参数 : 成功返回:SUCCESS/失败返回:ERROR
 使用说明 : 可下发可上报类型,需要在处理完数据后上报处理结果至app
 *****************************************************************************/
+extern void LED_ON(void);
+extern void LED_OFF(void);
 static unsigned char dp_download_switch_handle(const unsigned char value[], unsigned short length)
 {
     //示例:当前DP类型为BOOL
@@ -490,41 +495,14 @@ static unsigned char dp_download_switch_handle(const unsigned char value[], unsi
     switch_1 = mcu_get_dp_download_bool(value,length);
     if(switch_1 == 0) {
         //开关关
+			LED_ON();
     }else {
         //开关开
+			LED_OFF();
     }
   
     //处理完DP数据后应有反馈
     ret = mcu_dp_bool_update(DPID_SWITCH,switch_1);
-    if(ret == SUCCESS)
-        return SUCCESS;
-    else
-        return ERROR;
-}
-/*****************************************************************************
-函数名称 : dp_download_angry_handle
-功能描述 : 针对DPID_ANGRY的处理函数
-输入参数 : value:数据源数据
-        : length:数据长度
-返回参数 : 成功返回:SUCCESS/失败返回:ERROR
-使用说明 : 可下发可上报类型,需要在处理完数据后上报处理结果至app
-*****************************************************************************/
-static unsigned char dp_download_angry_handle(const unsigned char value[], unsigned short length)
-{
-    //示例:当前DP类型为BOOL
-    unsigned char ret;
-    //0:关/1:开
-    unsigned char angry;
-    
-    angry = mcu_get_dp_download_bool(value,length);
-    if(angry == 0) {
-        //开关关
-    }else {
-        //开关开
-    }
-  
-    //处理完DP数据后应有反馈
-    ret = mcu_dp_bool_update(DPID_ANGRY,angry);
     if(ret == SUCCESS)
         return SUCCESS;
     else
@@ -602,11 +580,6 @@ unsigned char dp_download_handle(unsigned char dpid,const unsigned char value[],
             //开关处理函数
             ret = dp_download_switch_handle(value,length);
         break;
-        case DPID_ANGRY:
-            //情绪管理处理函数
-            ret = dp_download_angry_handle(value,length);
-        break;
-
         
         default:
         break;
@@ -890,8 +863,9 @@ void get_upload_syn_result(unsigned char result)
  */
 void get_wifi_status(unsigned char result)
 {
-  #error "请自行完成获取 WIFI 状态结果代码,并删除该行"
- 
+  printf( "get_wifi_status=%d\r\n",result);
+ 					unsigned char switchstatus[15]={0X55,0XAA,0X03,0X07,0X00,0X08,0X0b,0x02,0x00,0x04,0x00,0x00,0x00,0x09,0x2B};
+extern void tuyamode_tx(unsigned char *TX , unsigned short TXlen);
     switch(result) {
         case 0:
             //wifi工作状态1
@@ -907,9 +881,13 @@ void get_wifi_status(unsigned char result)
         
         case 3:
             //wifi工作状态4
+				
+				
         break;
         
         case 4:
+
+          tuyamode_tx(switchstatus,15);
             //wifi工作状态5
         break;
         
@@ -1022,7 +1000,7 @@ void wifi_connect_test_result(unsigned char result)
  */
 void mcu_get_mac(unsigned char mac[])
 {
-    #error "请自行完成mac获取代码,并删除该行"
+    //#error "请自行完成mac获取代码,并删除该行"
     /*
     mac[0]为是否获取mac成功标志，0x00 表示成功，为0x01表示失败
     mac[1]~mac[6]:当获取 MAC地址标志位如果mac[0]为成功，则表示模块有效的MAC地址
@@ -1032,6 +1010,8 @@ void mcu_get_mac(unsigned char mac[])
         //获取mac出错
     }else {
         //正确接收到wifi模块返回的mac地址
+			for(int i=1;i<=6;i++)
+			printf("%02X-",mac[i]);
     }
 }
 #endif

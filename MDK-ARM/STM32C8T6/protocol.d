@@ -1,7 +1,4 @@
-stm32c8t6\protocol.o: ..\mcu_sdk\protocol.c
-stm32c8t6\protocol.o: ..\mcu_sdk\wifi.h
-stm32c8t6\protocol.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdio.h
-stm32c8t6\protocol.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\string.h
-stm32c8t6\protocol.o: ..\mcu_sdk\protocol.h
-stm32c8t6\protocol.o: ..\mcu_sdk\system.h
-stm32c8t6\protocol.o: ..\mcu_sdk\mcu_api.h
+stm32c8t6/protocol.o: ../mcu_sdk/protocol.c ../mcu_sdk/wifi.h \
+  C:\Keil_v5\ARM\ARMCLANG\Bin\..\include\stdio.h \
+  C:\Keil_v5\ARM\ARMCLANG\Bin\..\include\string.h ../mcu_sdk/protocol.h \
+  ../mcu_sdk/system.h ../mcu_sdk/mcu_api.h

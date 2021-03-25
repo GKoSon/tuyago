@@ -17,10 +17,21 @@ void tuyamode_init(void)
 	GK_usart_init(uport,UARTPORT,tuyarxbuf,NULL);
 }
 
+void print_arr(char *name,unsigned char *arr,int len)
+{
+	printf("%s[%d]",name,len);
+	if(len<10)
+	{
+	for(int a=0;a<len;a++)
+		printf("%02X ",arr[a]);
+	}
+	printf("\r\n");	
+}
 
-void tuyamode_tx(uint8_t *TX , uint16_t TXlen  )
+void tuyamode_tx(uint8_t *TX , uint16_t TXlen)
 {
     HAL_UART_Transmit(uport->huart, TX, TXlen, 0xFFFF);
+	  //print_arr("TX",TX, TXlen);
 }
 
 

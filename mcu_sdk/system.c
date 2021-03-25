@@ -87,11 +87,14 @@ static void wifi_uart_write_data(unsigned char *in, unsigned short len)
     if((NULL == in) || (0 == len)) {
         return;
     }
-    
+#if 0    
     while(len --) {
         uart_transmit_output(*in);
         in ++;
     }
+#else
+	tuyamode_tx(in,len);
+#endif
 }
 
 /**

@@ -51,6 +51,7 @@
 /* Private function prototypes -----------------------------------------------*/
 void SystemClock_Config(void);
 /* USER CODE BEGIN PFP */
+
 #include <stdio.h>
 int fputc(int ch, FILE *f)
 {
@@ -60,57 +61,38 @@ int fputc(int ch, FILE *f)
 #define SHOWME  printf("---%s--%d---\r\n",__FUNCTION__,__LINE__);
 
 
-
-
-
-
+void LED_ON(void){HAL_GPIO_WritePin(LED_GPIO_Port, LED_Pin, GPIO_PIN_RESET);}
+void LED_OFF(void){HAL_GPIO_WritePin(LED_GPIO_Port, LED_Pin, GPIO_PIN_SET);}
+void LED2_ON(void){HAL_GPIO_WritePin(LED2_GPIO_Port, LED2_Pin, GPIO_PIN_SET);}
+void LED2_OFF(void){HAL_GPIO_WritePin(LED2_GPIO_Port, LED2_Pin, GPIO_PIN_RESET);}
 
 void TEST_LOOP_IO(void)
 {
-	static int cnt=0;
-	HAL_Delay(200);
-
-	if(++cnt<6)
-	{
-		HAL_GPIO_TogglePin(LED_GPIO_Port, LED_Pin);
-		return;
-	}
-	
 	if(HAL_GPIO_ReadPin(KEY_GPIO_Port, KEY_Pin)==GPIO_PIN_RESET)
-			HAL_GPIO_WritePin(LED_GPIO_Port, LED_Pin, GPIO_PIN_RESET);//ON
+			LED_ON();
 	else
-		  HAL_GPIO_WritePin(LED_GPIO_Port, LED_Pin, GPIO_PIN_SET);//OFF
-
+		  LED_OFF();
 }
 
-
-
-
-
-
 #include "gktimer.h"
+
 uint8_t production_timer;
 void production_timeout_handler(void)
 {
-
-	static char cnt =0;
-	if(++cnt==6)gkTimer.stop(production_timer);
-	SHOWME
-  HAL_GPIO_TogglePin(LED_GPIO_Port, LED_Pin);
-
+		TEST_LOOP_IO();
 }
 void TEST_GKTIME(void)
 {
-	static gtime_type  node;
-  production_timer = gkTimer.creat(&node,10, 1, production_timeout_handler);
+	static gtime_type  node,node2;
+  production_timer = gkTimer.creat(&node,1, 1, production_timeout_handler);
+
 }
 
 void TSET_TIMER(void)
 {
 	HAL_TIM_Base_Start_IT(&htim2);
   HAL_TIM_Base_Start_IT(&htim1);
-	
-	TEST_GKTIME();
+	//TEST_GKTIME();
 }
 
 char value=0;
@@ -126,24 +108,22 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 #else	
 //0.1S
 	if (htim == (&htim1))
-    {
-      HAL_GPIO_TogglePin(LED_GPIO_Port, LED_Pin);
-			value = value?0:1;
-    }
-//		gtimer_loop();
+//    {
+//      HAL_GPIO_TogglePin(LED_GPIO_Port, LED_Pin);
+//			value = value?0:1;
+//    }
+		gtimer_loop();
 #endif		
 }
 
 
 
 
-
-
-#include "tuyamodeuart.h"
 int main(void)
 {
   /* USER CODE BEGIN 1 */
-
+extern void wifi_uart_service(void);
+extern void wifi_protocol_init(void);
   /* USER CODE END 1 */
 
   /* MCU Configuration--------------------------------------------------------*/
@@ -176,12 +156,16 @@ int main(void)
   /* USER CODE BEGIN WHILE */
 	tuyamode_init();
 	SHOWME
+	wifi_protocol_init();
+	HAL_GPIO_WritePin(LED_GPIO_Port, LED_Pin, GPIO_PIN_SET);
   while (1)
   {
     /* USER CODE END WHILE */
     //TEST_LOOP_IO();
 		//TEST_UARTTXRX();
-		 TEST_UARTRX();
+		// TEST_UARTRX();
+		wifi_uart_service();
+
     /* USER CODE BEGIN 3 */
   }
   /* USER CODE END 3 */

@@ -41,18 +41,24 @@ void GK_UART_RxIdleCallback(GK_USARTBASE_TYPE *myuart)
 		myuart->received2idle=1;
 
     printf("#######received2idle####\r\n");
-
+    extern void uart_receive_buff_input(unsigned char value[], unsigned short data_len);
+		uart_receive_buff_input(GKU2.rxBuf,GKU2.rx_len);
+		GK_usart_clear(&GKU2);
 	}
 }
 
 //不需要管理 它会自动调用 本来有WEAK
 void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart) //这里扩展一下！！！！
 { 
+extern	void uart_receive_input(unsigned char value);
   if(huart->Instance == USART2) 
 	{ 
 		GKU2.rxBuf[GKU2.rx_len++%500]=GKU2.one;//V1.0处理 可以 不要 
         if(GKU2.rxf)    GKU2.rxf(GKU2.one); ;//V2.0处理
-		HAL_UART_Receive_IT(huart, &GKU2.one, 1) ; 
+
+		//uart_receive_input(GKU2.one);
+		
+		HAL_UART_Receive_IT(huart, &GKU2.one, 1) ;
 	}
 	else if(huart->Instance == USART1) 
 	{ 

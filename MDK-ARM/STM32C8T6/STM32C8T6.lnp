@@ -24,6 +24,9 @@
 "stm32c8t6\gkbaseusart.o"
 "stm32c8t6\tuyamodeuart.o"
 "stm32c8t6\gktimer.o"
+"stm32c8t6\mcu_api.o"
+"stm32c8t6\protocol.o"
+"stm32c8t6\system.o"
 --library_type=microlib --strict --scatter "STM32C8T6\STM32C8T6.sct"
 --summary_stderr --info summarysizes --map --load_addr_map_info --xref --callgraph --symbols
 --info sizes --info totals --info unused --info veneers
