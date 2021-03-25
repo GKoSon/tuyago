@@ -483,8 +483,8 @@ static unsigned char dp_download_light_handle(const unsigned char value[], unsig
 返回参数 : 成功返回:SUCCESS/失败返回:ERROR
 使用说明 : 可下发可上报类型,需要在处理完数据后上报处理结果至app
 *****************************************************************************/
-extern void LED_ON(void);
-extern void LED_OFF(void);
+extern void LED2_ON(void);
+extern void LED2_OFF(void);
 static unsigned char dp_download_switch_handle(const unsigned char value[], unsigned short length)
 {
     //示例:当前DP类型为BOOL
@@ -495,10 +495,10 @@ static unsigned char dp_download_switch_handle(const unsigned char value[], unsi
     switch_1 = mcu_get_dp_download_bool(value,length);
     if(switch_1 == 0) {
         //开关关
-			LED_ON();
+			LED2_ON();
     }else {
         //开关开
-			LED_OFF();
+			LED2_OFF();
     }
   
     //处理完DP数据后应有反馈

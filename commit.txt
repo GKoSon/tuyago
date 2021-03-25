@@ -1,3 +1,3 @@
-[defect NO.]网络部分调试成功-原来修改产品功能以后需要再次配网啊-LED可以测试成功
+[defect NO.]外设声音01传感器控制板载LED-手机APP控制门禁灯板LED2(蓝色+)
 [modify comment]
 [bin source]0

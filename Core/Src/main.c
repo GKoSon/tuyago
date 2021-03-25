@@ -25,7 +25,9 @@
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
-
+#include "gktimer.h"
+#include "tuyamodeuart.h"
+#include "gunit.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -52,14 +54,6 @@
 void SystemClock_Config(void);
 /* USER CODE BEGIN PFP */
 
-#include <stdio.h>
-int fputc(int ch, FILE *f)
-{
-    HAL_UART_Transmit(&huart1 , (uint8_t *)&ch, 1 , 0xffff);
-    return ch;
-}
-#define SHOWME  printf("---%s--%d---\r\n",__FUNCTION__,__LINE__);
-
 
 void LED_ON(void){HAL_GPIO_WritePin(LED_GPIO_Port, LED_Pin, GPIO_PIN_RESET);}
 void LED_OFF(void){HAL_GPIO_WritePin(LED_GPIO_Port, LED_Pin, GPIO_PIN_SET);}
@@ -74,7 +68,6 @@ void TEST_LOOP_IO(void)
 		  LED_OFF();
 }
 
-#include "gktimer.h"
 
 uint8_t production_timer;
 void production_timeout_handler(void)
@@ -85,14 +78,13 @@ void TEST_GKTIME(void)
 {
 	static gtime_type  node,node2;
   production_timer = gkTimer.creat(&node,1, 1, production_timeout_handler);
-
 }
 
 void TSET_TIMER(void)
 {
 	HAL_TIM_Base_Start_IT(&htim2);
   HAL_TIM_Base_Start_IT(&htim1);
-	//TEST_GKTIME();
+	TEST_GKTIME();
 }
 
 char value=0;
@@ -115,7 +107,6 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 		gtimer_loop();
 #endif		
 }
-
 
 
 
@@ -155,7 +146,8 @@ extern void wifi_protocol_init(void);
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
 	tuyamode_init();
-	SHOWME
+	NEVERSHOW
+	G_lovexin();
 	wifi_protocol_init();
 	HAL_GPIO_WritePin(LED_GPIO_Port, LED_Pin, GPIO_PIN_SET);
   while (1)

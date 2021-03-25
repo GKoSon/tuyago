@@ -24,6 +24,7 @@
 "stm32c8t6\gkbaseusart.o"
 "stm32c8t6\tuyamodeuart.o"
 "stm32c8t6\gktimer.o"
+"stm32c8t6\gunit.o"
 "stm32c8t6\mcu_api.o"
 "stm32c8t6\protocol.o"
 "stm32c8t6\system.o"
