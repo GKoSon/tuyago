@@ -28,6 +28,7 @@
 #include "gktimer.h"
 #include "tuyamodeuart.h"
 #include "gunit.h"
+#include "motor.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -78,13 +79,13 @@ void production_timeout_handler(void)
 void TEST_GKTIME(void)
 {
 	static gtime_type  node;
-  production_timer = gkTimer.creat(&node,10, 1, production_timeout_handler);
+	production_timer = gkTimer.creat(&node,10, 1, production_timeout_handler);
 }
 
 void TSET_TIMER(void)
 {
 	HAL_TIM_Base_Start_IT(&htim2);
-  HAL_TIM_Base_Start_IT(&htim1);
+	HAL_TIM_Base_Start_IT(&htim1);
 	TEST_GKTIME();
 }
 
@@ -92,7 +93,7 @@ void TSET_TIMER(void)
 void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 {
 #if 1
-		if (htim == (&htim2))
+	if (htim == (&htim2))
     {
       HAL_GPIO_TogglePin(LED_GPIO_Port, LED_Pin);
 		  gtimer_loop();
@@ -101,23 +102,6 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 //已经用于高级定时器 不在使用
 	if (htim == (&htim1))
 #endif		
-}
-
-
-//方向
-#define STEPMOTOR_DIR_FORWARD()               HAL_GPIO_WritePin(M_DIR_GPIO_Port,M_DIR_Pin,GPIO_PIN_RESET)
-#define STEPMOTOR_DIR_REVERSAL()              HAL_GPIO_WritePin(M_DIR_GPIO_Port,M_DIR_Pin,GPIO_PIN_SET)
-//开关 因为共阳外接5V这里是0就停机
-#define STEPMOTOR_OUTPUT_ENABLE()             HAL_GPIO_WritePin(M_ENV_GPIO_Port,M_ENV_Pin,GPIO_PIN_SET)//开机
-#define STEPMOTOR_OUTPUT_DISABLE()            HAL_GPIO_WritePin(M_ENV_GPIO_Port,M_ENV_Pin,GPIO_PIN_RESET)//停机
-
-//下面函数 进2次 是一个完整脉冲
-__IO uint16_t Toggle_Pulse=500;//1000不动 500动了
-void HAL_TIM_OC_DelayElapsedCallback(TIM_HandleTypeDef *htim)
-{
-  uint16_t count;
-  count=__HAL_TIM_GET_COUNTER(&htim1);
-  __HAL_TIM_SET_COMPARE(&htim1,TIM_CHANNEL_1,count+Toggle_Pulse);
 }
 
 int main(void)
@@ -157,12 +141,12 @@ extern void wifi_protocol_init(void);
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
-	tuyamode_init();
-	NEVERSHOW
-	G_lovexin();
-	wifi_protocol_init();
-	HAL_GPIO_WritePin(LED_GPIO_Port, LED_Pin, GPIO_PIN_SET);
-	STEPMOTOR_OUTPUT_ENABLE();
+  tuyamode_init();
+  NEVERSHOW
+  G_lovexin();
+  wifi_protocol_init();
+  HAL_GPIO_WritePin(LED_GPIO_Port, LED_Pin, GPIO_PIN_SET);
+  motor_on();
   while (1)
   {
     /* USER CODE END WHILE */

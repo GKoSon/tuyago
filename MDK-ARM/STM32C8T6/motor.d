@@ -1,4 +1,5 @@
-stm32c8t6/main.o: ../Core/Src/main.c ../Core/Inc\main.h \
+stm32c8t6/motor.o: ../gdeveloper/motor.c ../gdeveloper/motor.h \
+  ../Core/Inc\tim.h ../Core/Inc/main.h \
   ../Drivers/STM32F1xx_HAL_Driver/Inc\stm32f1xx_hal.h \
   ../Core/Inc\stm32f1xx_hal_conf.h \
   ../Drivers/STM32F1xx_HAL_Driver/Inc\stm32f1xx_hal_rcc.h \
@@ -26,14 +27,4 @@ stm32c8t6/main.o: ../Core/Src/main.c ../Core/Inc\main.h \
   ../Drivers/STM32F1xx_HAL_Driver/Inc\stm32f1xx_hal_pwr.h \
   ../Drivers/STM32F1xx_HAL_Driver/Inc\stm32f1xx_hal_tim.h \
   ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_tim_ex.h \
-  ../Drivers/STM32F1xx_HAL_Driver/Inc\stm32f1xx_hal_uart.h \
-  ../Core/Inc\tim.h ../Core/Inc\usart.h ../Core/Inc\gpio.h \
-  ../gdeveloper\gktimer.h \
-  C:\Keil_v5\ARM\ARMCLANG\Bin\..\include\stdlib.h \
-  C:\Keil_v5\ARM\ARMCLANG\Bin\..\include\string.h \
-  C:\Keil_v5\ARM\ARMCLANG\Bin\..\include\stdbool.h \
-  ../gdeveloper\tuyamodeuart.h ../gdeveloper/gkbaseusart.h \
-  ../gdeveloper\gunit.h ../gdeveloper/gcinclude.h \
-  C:\Keil_v5\ARM\ARMCLANG\Bin\..\include\stdio.h \
-  C:\Keil_v5\ARM\ARMCLANG\Bin\..\include\ctype.h \
-  C:\Keil_v5\ARM\ARMCLANG\Bin\..\include\stdarg.h ../gdeveloper\motor.h
+  ../Drivers/STM32F1xx_HAL_Driver/Inc\stm32f1xx_hal_uart.h
