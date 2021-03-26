@@ -72,12 +72,13 @@ void TEST_LOOP_IO(void)
 uint8_t production_timer;
 void production_timeout_handler(void)
 {
-		TEST_LOOP_IO();
+	//TEST_LOOP_IO();
+	HAL_GPIO_TogglePin(LED2_GPIO_Port, LED2_Pin);
 }
 void TEST_GKTIME(void)
 {
-	static gtime_type  node,node2;
-  production_timer = gkTimer.creat(&node,1, 1, production_timeout_handler);
+	static gtime_type  node;
+  production_timer = gkTimer.creat(&node,10, 1, production_timeout_handler);
 }
 
 void TSET_TIMER(void)
@@ -87,28 +88,37 @@ void TSET_TIMER(void)
 	TEST_GKTIME();
 }
 
-char value=0;
+
 void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 {
-#if 0	
-//1s
-    if (htim == (&htim2))
+#if 1
+		if (htim == (&htim2))
     {
       HAL_GPIO_TogglePin(LED_GPIO_Port, LED_Pin);
-			value = value?0:1;
+		  gtimer_loop();
     }
 #else	
-//0.1S
+//已经用于高级定时器 不在使用
 	if (htim == (&htim1))
-//    {
-//      HAL_GPIO_TogglePin(LED_GPIO_Port, LED_Pin);
-//			value = value?0:1;
-//    }
-		gtimer_loop();
 #endif		
 }
 
 
+//方向
+#define STEPMOTOR_DIR_FORWARD()               HAL_GPIO_WritePin(M_DIR_GPIO_Port,M_DIR_Pin,GPIO_PIN_RESET)
+#define STEPMOTOR_DIR_REVERSAL()              HAL_GPIO_WritePin(M_DIR_GPIO_Port,M_DIR_Pin,GPIO_PIN_SET)
+//开关 因为共阳外接5V这里是0就停机
+#define STEPMOTOR_OUTPUT_ENABLE()             HAL_GPIO_WritePin(M_ENV_GPIO_Port,M_ENV_Pin,GPIO_PIN_SET)//开机
+#define STEPMOTOR_OUTPUT_DISABLE()            HAL_GPIO_WritePin(M_ENV_GPIO_Port,M_ENV_Pin,GPIO_PIN_RESET)//停机
+
+//下面函数 进2次 是一个完整脉冲
+__IO uint16_t Toggle_Pulse=500;//1000不动 500动了
+void HAL_TIM_OC_DelayElapsedCallback(TIM_HandleTypeDef *htim)
+{
+  uint16_t count;
+  count=__HAL_TIM_GET_COUNTER(&htim1);
+  __HAL_TIM_SET_COMPARE(&htim1,TIM_CHANNEL_1,count+Toggle_Pulse);
+}
 
 int main(void)
 {
@@ -141,6 +151,8 @@ extern void wifi_protocol_init(void);
   MX_USART2_UART_Init();
   /* USER CODE BEGIN 2 */
   TSET_TIMER();
+	
+	HAL_TIM_OC_Start_IT(&htim1,TIM_CHANNEL_1);
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -150,13 +162,10 @@ extern void wifi_protocol_init(void);
 	G_lovexin();
 	wifi_protocol_init();
 	HAL_GPIO_WritePin(LED_GPIO_Port, LED_Pin, GPIO_PIN_SET);
+	STEPMOTOR_OUTPUT_ENABLE();
   while (1)
   {
     /* USER CODE END WHILE */
-    //TEST_LOOP_IO();
-		//TEST_UARTTXRX();
-		// TEST_UARTRX();
-		wifi_uart_service();
 
     /* USER CODE BEGIN 3 */
   }
