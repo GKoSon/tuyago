@@ -73,8 +73,7 @@ void TEST_LOOP_IO(void)
 uint8_t production_timer;
 void production_timeout_handler(void)
 {
-	//TEST_LOOP_IO();
-	HAL_GPIO_TogglePin(LED2_GPIO_Port, LED2_Pin);
+	TEST_LOOP_IO();
 }
 void TEST_GKTIME(void)
 {
@@ -95,7 +94,7 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 #if 1
 	if (htim == (&htim2))
     {
-      HAL_GPIO_TogglePin(LED_GPIO_Port, LED_Pin);
+      //HAL_GPIO_TogglePin(LED_GPIO_Port, LED_Pin);
 		  gtimer_loop();
     }
 #else	
@@ -146,10 +145,14 @@ extern void wifi_protocol_init(void);
   G_lovexin();
   wifi_protocol_init();
   HAL_GPIO_WritePin(LED_GPIO_Port, LED_Pin, GPIO_PIN_SET);
-  motor_on();
+  motor_off();
   while (1)
   {
     /* USER CODE END WHILE */
+    //TEST_LOOP_IO();
+		//TEST_UARTTXRX();
+		// TEST_UARTRX();
+		wifi_uart_service();
 
     /* USER CODE BEGIN 3 */
   }

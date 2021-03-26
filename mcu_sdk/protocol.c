@@ -485,6 +485,7 @@ static unsigned char dp_download_light_handle(const unsigned char value[], unsig
 *****************************************************************************/
 extern void LED2_ON(void);
 extern void LED2_OFF(void);
+#include "motor.h"
 static unsigned char dp_download_switch_handle(const unsigned char value[], unsigned short length)
 {
     //示例:当前DP类型为BOOL
@@ -492,13 +493,22 @@ static unsigned char dp_download_switch_handle(const unsigned char value[], unsi
     //0:关/1:开
     unsigned char switch_1;
     
+    static char flag=0;
     switch_1 = mcu_get_dp_download_bool(value,length);
     if(switch_1 == 0) {
         //开关关
 			LED2_ON();
+			motor_off();
+			if(flag)
+                motor_left();
+			else
+                motor_right();
+
+			flag=flag?0:1;
     }else {
         //开关开
 			LED2_OFF();
+			motor_on();
     }
   
     //处理完DP数据后应有反馈
