@@ -38,13 +38,13 @@ void GK_UART_RxIdleCallback(GK_USARTBASE_TYPE *myuart)
 	{
 		__HAL_UART_CLEAR_IDLEFLAG(myuart->huart);
 
-		myuart->received2idle=1;
+        myuart->received2idle=1;
 
-    printf("#######received2idle####\r\n");
-    extern void uart_receive_buff_input(unsigned char value[], unsigned short data_len);
-		uart_receive_buff_input(GKU2.rxBuf,GKU2.rx_len);
-		GK_usart_clear(&GKU2);
-	}
+        //printf("#######received2idle####\r\n");
+        extern void uart_receive_buff_input(unsigned char value[], unsigned short data_len);
+        uart_receive_buff_input(GKU2.rxBuf,GKU2.rx_len);
+        GK_usart_clear(&GKU2);
+    }
 }
 
 //不需要管理 它会自动调用 本来有WEAK

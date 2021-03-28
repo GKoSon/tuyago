@@ -27,9 +27,9 @@
 2:程序正常初始化完成后,建议不进行关串口中断,如必须关中断,关中断时间必须短,关中断会引起串口数据包丢失
 3:请勿在中断/定时器中断内调用上报函数
 ******************************************************************************/
-
+#include "gunit.h"
 #include "wifi.h"
-
+extern void setnumtogive(char a);
 #ifdef WEATHER_ENABLE
 /**
  * @var    weather_choose
@@ -150,8 +150,9 @@ void uart_transmit_output(unsigned char value)
  */
 void all_data_update(void)
 {
+SHOWME
 	    mcu_dp_bool_update(DPID_SWITCH,0); 
-	    mcu_dp_value_update(DPID_BATTERY_PERCENTAGE,80); //VALUE型数据上报;
+	    mcu_dp_value_update(DPID_BATTERY_PERCENTAGE,100); //VALUE型数据上报;
 //    #error "请在此处理可下发可上报数据及只上报数据示例,处理完成后删除该行"
     /*
     //此代码为平台自动生成，请按照实际数据修改每个可下发可上报函数和只上报函数
@@ -175,7 +176,7 @@ void all_data_update(void)
     mcu_dp_value_update(DPID_VOICE_TIMES,当前语音播放次数); //VALUE型数据上报;
     mcu_dp_bool_update(DPID_LIGHT,当前小夜灯); //BOOL型数据上报;
     mcu_dp_bool_update(DPID_SWITCH,当前开关); //BOOL型数据上报;
-    mcu_dp_bool_update(DPID_ANGRY,当前情绪管理); //BOOL型数据上报;
+
 
     */
 }
@@ -226,10 +227,13 @@ static unsigned char dp_download_quick_feed_handle(const unsigned char value[], 
     unsigned char quick_feed;
     
     quick_feed = mcu_get_dp_download_bool(value,length);
+print_arr("dp_download_quick_feed_handle",value,length);
+printf("quick_feed=%d\r\n",quick_feed);
     if(quick_feed == 0) {
         //开关关
     }else {
         //开关开
+        setnumtogive(quick_feed);
     }
   
     //处理完DP数据后应有反馈
@@ -252,8 +256,10 @@ static unsigned char dp_download_manual_feed_handle(const unsigned char value[],
     //示例:当前DP类型为VALUE
     unsigned char ret;
     unsigned long manual_feed;
-    
     manual_feed = mcu_get_dp_download_value(value,length);
+print_arr("dp_download_manual_feed_handle",value,length);
+printf("manual_feed=%d\r\n",manual_feed);
+    setnumtogive(manual_feed);
     /*
     //VALUE类型数据处理
     
@@ -432,7 +438,7 @@ static unsigned char dp_download_voice_times_handle(const unsigned char value[],
     //示例:当前DP类型为VALUE
     unsigned char ret;
     unsigned long voice_times;
-    
+SHOWME    
     voice_times = mcu_get_dp_download_value(value,length);
     /*
     //VALUE类型数据处理
@@ -454,18 +460,23 @@ static unsigned char dp_download_voice_times_handle(const unsigned char value[],
 返回参数 : 成功返回:SUCCESS/失败返回:ERROR
 使用说明 : 可下发可上报类型,需要在处理完数据后上报处理结果至app
 *****************************************************************************/
+extern void LED2_ON(void);
+extern void LED2_OFF(void);
+#include "motor.h"
 static unsigned char dp_download_light_handle(const unsigned char value[], unsigned short length)
 {
     //示例:当前DP类型为BOOL
     unsigned char ret;
     //0:关/1:开
     unsigned char light;
-    
+SHOWME    
     light = mcu_get_dp_download_bool(value,length);
     if(light == 0) {
         //开关关
+        LED2_OFF();
     }else {
         //开关开
+        LED2_ON();
     }
   
     //处理完DP数据后应有反馈
@@ -483,34 +494,31 @@ static unsigned char dp_download_light_handle(const unsigned char value[], unsig
 返回参数 : 成功返回:SUCCESS/失败返回:ERROR
 使用说明 : 可下发可上报类型,需要在处理完数据后上报处理结果至app
 *****************************************************************************/
-extern void LED2_ON(void);
-extern void LED2_OFF(void);
-#include "motor.h"
+
 static unsigned char dp_download_switch_handle(const unsigned char value[], unsigned short length)
 {
     //示例:当前DP类型为BOOL
     unsigned char ret;
     //0:关/1:开
     unsigned char switch_1;
-    
+SHOWME    
     static char flag=0;
     switch_1 = mcu_get_dp_download_bool(value,length);
     if(switch_1 == 0) {
         //开关关
-			LED2_ON();
-			motor_off();
-			if(flag)
-                motor_left();
-			else
-                motor_right();
+			LED_OFF();
+//			motor_off();
+//			if(flag)
+//                motor_left();
+//			else
+//                motor_right();
 
-			flag=flag?0:1;
+//			flag=flag?0:1;
     }else {
         //开关开
-			LED2_OFF();
-			motor_on();
+			LED_ON();
+//			motor_on();
     }
-  
     //处理完DP数据后应有反馈
     ret = mcu_dp_bool_update(DPID_SWITCH,switch_1);
     if(ret == SUCCESS)
@@ -874,8 +882,6 @@ void get_upload_syn_result(unsigned char result)
 void get_wifi_status(unsigned char result)
 {
   printf( "get_wifi_status=%d\r\n",result);
- 					unsigned char switchstatus[15]={0X55,0XAA,0X03,0X07,0X00,0X08,0X0b,0x02,0x00,0x04,0x00,0x00,0x00,0x09,0x2B};
-extern void tuyamode_tx(unsigned char *TX , unsigned short TXlen);
     switch(result) {
         case 0:
             //wifi工作状态1
@@ -891,13 +897,9 @@ extern void tuyamode_tx(unsigned char *TX , unsigned short TXlen);
         
         case 3:
             //wifi工作状态4
-				
-				
         break;
         
         case 4:
-
-          tuyamode_tx(switchstatus,15);
             //wifi工作状态5
         break;
         

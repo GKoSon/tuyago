@@ -64,17 +64,17 @@ void LED2_OFF(void){HAL_GPIO_WritePin(LED2_GPIO_Port, LED2_Pin, GPIO_PIN_RESET);
 void TEST_LOOP_IO(void)
 {
 	if(HAL_GPIO_ReadPin(KEY_GPIO_Port, KEY_Pin)==GPIO_PIN_RESET)
-			LED_ON();
+		LED_ON();
 	else
-		  LED_OFF();
+		LED_OFF();
 }
-
 
 uint8_t production_timer;
 void production_timeout_handler(void)
 {
 	TEST_LOOP_IO();
 }
+
 void TEST_GKTIME(void)
 {
 	static gtime_type  node;
@@ -88,14 +88,13 @@ void TSET_TIMER(void)
 	TEST_GKTIME();
 }
 
-
 void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 {
 #if 1
 	if (htim == (&htim2))
     {
       //HAL_GPIO_TogglePin(LED_GPIO_Port, LED_Pin);
-		  gtimer_loop();
+	    gtimer_loop();
     }
 #else	
 //已经用于高级定时器 不在使用
@@ -134,8 +133,7 @@ extern void wifi_protocol_init(void);
   MX_USART2_UART_Init();
   /* USER CODE BEGIN 2 */
   TSET_TIMER();
-	
-	HAL_TIM_OC_Start_IT(&htim1,TIM_CHANNEL_1);
+  //HAL_TIM_OC_Start_IT(&htim1,TIM_CHANNEL_1);
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -146,13 +144,14 @@ extern void wifi_protocol_init(void);
   wifi_protocol_init();
   HAL_GPIO_WritePin(LED_GPIO_Port, LED_Pin, GPIO_PIN_SET);
   motor_off();
+
   while (1)
   {
     /* USER CODE END WHILE */
     //TEST_LOOP_IO();
-		//TEST_UARTTXRX();
-		// TEST_UARTRX();
-		wifi_uart_service();
+    //TEST_UARTTXRX();
+    // TEST_UARTRX();
+    wifi_uart_service();
 
     /* USER CODE BEGIN 3 */
   }
