@@ -27,35 +27,18 @@ Project File Date:  03/26/2021
 <h2>Output:</h2>
 *** Using Compiler 'V6.9', folder: 'C:\Keil_v5\ARM\ARMCLANG\Bin'
 Build target 'STM32C8T6'
-compiling motor.c...
-../mcu_sdk/protocol.c(230): warning: passing 'const unsigned char *' to parameter of type 'unsigned char *' discards qualifiers [-Wincompatible-pointer-types-discards-qualifiers]
-print_arr("dp_download_quick_feed_handle",value,length);
-                                          ^~~~~
-../gdeveloper\gunit.h(98): note: passing argument to parameter 'arr' here
-void print_arr(char *name,unsigned char *arr,int len);
-                                         ^
-../mcu_sdk/protocol.c(260): warning: passing 'const unsigned char *' to parameter of type 'unsigned char *' discards qualifiers [-Wincompatible-pointer-types-discards-qualifiers]
-print_arr("dp_download_manual_feed_handle",value,length);
-                                           ^~~~~
-../gdeveloper\gunit.h(98): note: passing argument to parameter 'arr' here
-void print_arr(char *name,unsigned char *arr,int len);
-                                         ^
-../mcu_sdk/protocol.c(261): warning: format specifies type 'int' but the argument has type 'unsigned long' [-Wformat]
-printf("manual_feed=%d\r\n",manual_feed);
-                    ~~      ^~~~~~~~~~~
-                    %lu
-../mcu_sdk/protocol.c(509): warning: implicit declaration of function 'LED_OFF' is invalid in C99 [-Wimplicit-function-declaration]
+../mcu_sdk/protocol.c(523): warning: implicit declaration of function 'LED_OFF' is invalid in C99 [-Wimplicit-function-declaration]
                         LED_OFF();
                         ^
-../mcu_sdk/protocol.c(519): warning: implicit declaration of function 'LED_ON' is invalid in C99 [-Wimplicit-function-declaration]
+../mcu_sdk/protocol.c(533): warning: implicit declaration of function 'LED_ON' is invalid in C99 [-Wimplicit-function-declaration]
                         LED_ON();
                         ^
-5 warnings generated.
+2 warnings generated.
 compiling protocol.c...
 linking...
-Program Size: Code=12572 RO-data=508 RW-data=40 ZI-data=1712  
+Program Size: Code=12496 RO-data=464 RW-data=48 ZI-data=1704  
 FromELF: creating hex file...
-"STM32C8T6\STM32C8T6.axf" - 0 Error(s), 5 Warning(s).
+"STM32C8T6\STM32C8T6.axf" - 0 Error(s), 2 Warning(s).
 
 <h2>Software Packages used:</h2>
 

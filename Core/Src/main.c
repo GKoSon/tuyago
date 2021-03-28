@@ -139,11 +139,10 @@ extern void wifi_protocol_init(void);
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
   tuyamode_init();
-  NEVERSHOW
+
   G_lovexin();
   wifi_protocol_init();
   HAL_GPIO_WritePin(LED_GPIO_Port, LED_Pin, GPIO_PIN_SET);
-  motor_off();
 
   while (1)
   {

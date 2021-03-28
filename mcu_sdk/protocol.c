@@ -153,6 +153,7 @@ void all_data_update(void)
 SHOWME
 	    mcu_dp_bool_update(DPID_SWITCH,0); 
 	    mcu_dp_value_update(DPID_BATTERY_PERCENTAGE,100); //VALUE型数据上报;
+        mcu_dp_value_update(DPID_SURPLUS_GRAIN,100); //VALUE型数据上报;
 //    #error "请在此处理可下发可上报数据及只上报数据示例,处理完成后删除该行"
     /*
     //此代码为平台自动生成，请按照实际数据修改每个可下发可上报函数和只上报函数
@@ -219,6 +220,9 @@ static unsigned char dp_download_meal_plan_handle(const unsigned char value[], u
 返回参数 : 成功返回:SUCCESS/失败返回:ERROR
 使用说明 : 可下发可上报类型,需要在处理完数据后上报处理结果至app
 *****************************************************************************/
+int TOTAL_NUM=50;
+int COUS_NUM=0;
+
 static unsigned char dp_download_quick_feed_handle(const unsigned char value[], unsigned short length)
 {
     //示例:当前DP类型为BOOL
@@ -227,19 +231,24 @@ static unsigned char dp_download_quick_feed_handle(const unsigned char value[], 
     unsigned char quick_feed;
     
     quick_feed = mcu_get_dp_download_bool(value,length);
-print_arr("dp_download_quick_feed_handle",value,length);
-printf("quick_feed=%d\r\n",quick_feed);
+//print_arr("dp_download_quick_feed_handle",value,length);
+//printf("quick_feed=%d\r\n",quick_feed);
     if(quick_feed == 0) {
         //开关关
     }else {
         //开关开
+        if(COUS_NUM>=TOTAL_NUM)  {mcu_dp_bool_update(DPID_QUICK_FEED,0);return ERROR;}
         setnumtogive(quick_feed);
     }
   
     //处理完DP数据后应有反馈
     ret = mcu_dp_bool_update(DPID_QUICK_FEED,quick_feed);
-    if(ret == SUCCESS)
+    if(ret == SUCCESS)      
+    {
+        COUS_NUM +=1;
+        mcu_dp_value_update(DPID_SURPLUS_GRAIN,(TOTAL_NUM-COUS_NUM)*100/TOTAL_NUM); 
         return SUCCESS;
+    }
     else
         return ERROR;
 }
@@ -257,8 +266,9 @@ static unsigned char dp_download_manual_feed_handle(const unsigned char value[],
     unsigned char ret;
     unsigned long manual_feed;
     manual_feed = mcu_get_dp_download_value(value,length);
-print_arr("dp_download_manual_feed_handle",value,length);
-printf("manual_feed=%d\r\n",manual_feed);
+//print_arr("dp_download_manual_feed_handle",value,length);
+//printf("manual_feed=%d\r\n",manual_feed);
+    if(COUS_NUM>=TOTAL_NUM)  {mcu_dp_bool_update(DPID_MANUAL_FEED,0);return ERROR;}
     setnumtogive(manual_feed);
     /*
     //VALUE类型数据处理
@@ -267,8 +277,12 @@ printf("manual_feed=%d\r\n",manual_feed);
     
     //处理完DP数据后应有反馈
     ret = mcu_dp_value_update(DPID_MANUAL_FEED,manual_feed);
-    if(ret == SUCCESS)
+    if(ret == SUCCESS)      
+    {
+        COUS_NUM +=manual_feed;
+        mcu_dp_value_update(DPID_SURPLUS_GRAIN,(TOTAL_NUM-COUS_NUM)*100/TOTAL_NUM); 
         return SUCCESS;
+    }
     else
         return ERROR;
 }

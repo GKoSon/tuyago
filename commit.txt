@@ -1,3 +1,3 @@
-[defect NO.]增加语音控制-小智管家打开涂鸦/打开涂鸦的自动功能-可以启动灯板和电机
+[defect NO.]简单完善以下余料逻辑测试通过
 [modify comment]
 [bin source]0

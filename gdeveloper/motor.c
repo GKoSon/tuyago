@@ -11,12 +11,20 @@
 void motor_left(void) {STEPMOTOR_DIR_FORWARD();};
 void motor_right(void){STEPMOTOR_DIR_REVERSAL();};
 void motor_on(void) {HAL_TIM_OC_Start_IT(&htim1,TIM_CHANNEL_1);STEPMOTOR_OUTPUT_ENABLE();};
-void motor_off(void){HAL_TIM_OC_Stop_IT(&htim1,TIM_CHANNEL_1); };//STEPMOTOR_OUTPUT_DISABLE();};
+void motor_off(void){HAL_TIM_OC_Stop_IT(&htim1,TIM_CHANNEL_1); };
 
 //下面函数 进2次 是一个完整脉冲
-__IO uint16_t Toggle_Pulse=200;//1000不动 500动了
+__IO uint16_t Toggle_Pulse=600;//1000不动 500动了
 __IO uint32_t numtogive;
-void setnumtogive(char a){numtogive = 800*a;motor_on();};
+void setnumtogive(char a){numtogive = 6400*a;motor_on();};//此时a=1 转动180度
+/*
+余粮食设计 初始是100%的粮食 对应转动N圈可以全部消费完
+也就是100%对应2N个快速喂食
+当执行m次快速喂食 余量就是2N-M/2N
+其中N---TOTAL_NUM
+M---COUS_NUM
+我在每次喂食以后主动上报一下吧
+*/
 void HAL_TIM_OC_DelayElapsedCallback(TIM_HandleTypeDef *htim)
 {
 #if 0    
