@@ -4,8 +4,8 @@
 #include <stdio.h>
 
 static GK_USARTBASE_TYPE * uport = NULL;
-//#define UARTPORT 1 //PC串口TX---PA10 PC串口RX---PA9  此时测试成功 串口发送啥 STM32就返回啥
-#define UARTPORT 2  //PC串口TX---PA3 PC串口RX---PA2  此时测试成功 串口发送啥 STM32就返回啥
+#define UARTPORT 1 //PC串口TX---PA10 PC串口RX---PA9  此时测试成功 串口发送啥 STM32就返回啥
+//#define UARTPORT 2  //PC串口TX---PA3 PC串口RX---PA2  此时测试成功 串口发送啥 STM32就返回啥
 
 
 uint8_t tuyarxbuf[200];
@@ -46,7 +46,7 @@ void TEST_UARTTXRX(void)
 	
 	if(rst)
 	{
-    goon=1;
+        goon=1;
 		tuyamode_tx(RX,RXlen);
 	}
 

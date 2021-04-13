@@ -36,11 +36,11 @@ void GK_UART_RxIdleCallback(GK_USARTBASE_TYPE *myuart)
 {
 	if(__HAL_UART_GET_FLAG(myuart->huart,UART_FLAG_IDLE))
 	{
-		__HAL_UART_CLEAR_IDLEFLAG(myuart->huart);
+        __HAL_UART_CLEAR_IDLEFLAG(myuart->huart);
 
-		myuart->received2idle=1;
+        myuart->received2idle=1;
 
-    printf("#######received2idle####\r\n");
+        printf("#######received2idle####\r\n");
 
 	}
 }

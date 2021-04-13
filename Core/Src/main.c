@@ -77,9 +77,9 @@ void TEST_LOOP_IO(void)
 	}
 	
 	if(HAL_GPIO_ReadPin(KEY_GPIO_Port, KEY_Pin)==GPIO_PIN_RESET)
-			HAL_GPIO_WritePin(LED_GPIO_Port, LED_Pin, GPIO_PIN_RESET);//ON
+		HAL_GPIO_WritePin(LED_GPIO_Port, LED_Pin, GPIO_PIN_RESET);//ON
 	else
-		  HAL_GPIO_WritePin(LED_GPIO_Port, LED_Pin, GPIO_PIN_SET);//OFF
+		HAL_GPIO_WritePin(LED_GPIO_Port, LED_Pin, GPIO_PIN_SET);//OFF
 
 }
 
@@ -94,44 +94,40 @@ void production_timeout_handler(void)
 {
 
 	static char cnt =0;
-	if(++cnt==6)gkTimer.stop(production_timer);
+	if(++cnt==3)gkTimer.stop(production_timer);
 	SHOWME
-  HAL_GPIO_TogglePin(LED_GPIO_Port, LED_Pin);
+    HAL_GPIO_TogglePin(LED_GPIO_Port, LED_Pin);
 
 }
 void TEST_GKTIME(void)
 {
 	static gtime_type  node;
-  production_timer = gkTimer.creat(&node,10, 1, production_timeout_handler);
+    production_timer = gkTimer.creat(&node,1, 1, production_timeout_handler);
 }
 
 void TSET_TIMER(void)
 {
-	HAL_TIM_Base_Start_IT(&htim2);
-  HAL_TIM_Base_Start_IT(&htim1);
-	
-	TEST_GKTIME();
+    HAL_TIM_Base_Start_IT(&htim2);
+    HAL_TIM_Base_Start_IT(&htim1);
+
+    TEST_GKTIME();
 }
 
-char value=0;
+
 void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
-{
-#if 0	
+{	
 //1s
     if (htim == (&htim2))
     {
-      HAL_GPIO_TogglePin(LED_GPIO_Port, LED_Pin);
-			value = value?0:1;
+      gtimer_loop();
     }
-#else	
+	
 //0.1S
 	if (htim == (&htim1))
     {
-      HAL_GPIO_TogglePin(LED_GPIO_Port, LED_Pin);
-			value = value?0:1;
+
     }
-//		gtimer_loop();
-#endif		
+		
 }
 
 
@@ -174,14 +170,14 @@ int main(void)
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
-	tuyamode_init();
-	SHOWME
+  tuyamode_init();
+  SHOWME
   while (1)
   {
     /* USER CODE END WHILE */
     //TEST_LOOP_IO();
-		//TEST_UARTTXRX();
-		 TEST_UARTRX();
+    //TEST_UARTTXRX();
+
     /* USER CODE BEGIN 3 */
   }
   /* USER CODE END 3 */
