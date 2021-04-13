@@ -86,6 +86,15 @@ void TEST_LOOP_IO(void)
 
 
 
+void TIM1_Delay(int us)
+{
+    uint16_t differ=us;
+    if(differ>999)return;
+    HAL_TIM_Base_Start(&htim1); //HAL_TIM_Base_Start_IT
+    __HAL_TIM_SET_COUNTER(&htim1,0);
+    while(__HAL_TIM_GET_COUNTER(&htim1) < differ);
+    HAL_TIM_Base_Stop(&htim1);
+}
 
 
 #include "gktimer.h"
@@ -94,7 +103,17 @@ void production_timeout_handler(void)
 {
 
 	static char cnt =0;
-	if(++cnt==3)gkTimer.stop(production_timer);
+	if(++cnt==20)
+    {
+        gkTimer.stop(production_timer);
+        for(int i=0;i<20;i++)
+        {
+           //TIM1_Delay(500);TIM1_Delay(500);//1ms 需要100个
+           for(int j=0;j<200;j++)TIM1_Delay(500);
+           HAL_GPIO_TogglePin(LED_GPIO_Port, LED_Pin);
+           SHOWME
+        }
+    }
 	SHOWME
     HAL_GPIO_TogglePin(LED_GPIO_Port, LED_Pin);
 
@@ -102,13 +121,13 @@ void production_timeout_handler(void)
 void TEST_GKTIME(void)
 {
 	static gtime_type  node;
-    production_timer = gkTimer.creat(&node,1, 1, production_timeout_handler);
+    production_timer = gkTimer.creat(&node,100, 1, production_timeout_handler);
 }
 
 void TSET_TIMER(void)
 {
     HAL_TIM_Base_Start_IT(&htim2);
-    HAL_TIM_Base_Start_IT(&htim1);
+//  HAL_TIM_Base_Start_IT(&htim1);
 
     TEST_GKTIME();
 }
@@ -116,20 +135,19 @@ void TSET_TIMER(void)
 
 void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 {	
-//1s
+//都是1MS一次
     if (htim == (&htim2))
     {
       gtimer_loop();
     }
 	
-//0.1S
-	if (htim == (&htim1))
-    {
 
-    }
-		
+//	if (htim == (&htim1))
+//    {
+
+//    }
+//		
 }
-
 
 
 
