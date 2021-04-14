@@ -1,3 +1,3 @@
-[defect NO.]IIC测试直接成功哈哈
+[defect NO.]增加一rtc在CSDN找MX第一步我搬过来的
 [modify comment]
 [bin source]0
