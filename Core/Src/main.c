@@ -111,7 +111,6 @@ void production_timeout_handler(void)
            //TIM1_Delay(500);TIM1_Delay(500);//1ms ÐèÒª100¸ö
            for(int j=0;j<200;j++)TIM1_Delay(500);
            HAL_GPIO_TogglePin(LED_GPIO_Port, LED_Pin);
-           SHOWME
         }
     }
 	SHOWME

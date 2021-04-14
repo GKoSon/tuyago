@@ -1,3 +1,3 @@
-[defect NO.]IIC第一步准备US延时器https://blog.csdn.net/weixin_42381351/article/details/104059456
+[defect NO.]IIC第二步准备GPIO2个-等待后面验证
 [modify comment]
 [bin source]0
