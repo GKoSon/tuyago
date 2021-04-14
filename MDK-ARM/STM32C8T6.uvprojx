@@ -546,6 +546,11 @@
               <FileType>1</FileType>
               <FilePath>..\gdeveloper\TM1637.c</FilePath>
             </File>
+            <File>
+              <FileName>gbsprtc.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\gdeveloper\gbsprtc.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>

@@ -41,6 +41,10 @@ void MX_RTC_Init(void);
 
 /* USER CODE BEGIN Prototypes */
 
+void hal_rtc_read(uint8_t *time);
+
+void hal_rtc_set(uint8_t year , uint8_t mon , uint8_t day ,uint8_t hour , uint8_t min , uint8_t sec , uint8_t week);
+
 /* USER CODE END Prototypes */
 
 #ifdef __cplusplus

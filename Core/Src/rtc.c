@@ -21,7 +21,7 @@
 #include "rtc.h"
 
 /* USER CODE BEGIN 0 */
-
+#include <stdio.h>
 /* USER CODE END 0 */
 
 RTC_HandleTypeDef hrtc;
@@ -125,6 +125,65 @@ void HAL_RTC_MspDeInit(RTC_HandleTypeDef* rtcHandle)
 }
 
 /* USER CODE BEGIN 1 */
+
+
+
+
+
+
+void hal_rtc_read(uint8_t *time)
+{
+    RTC_DateTypeDef sTimeStampDateget;
+    RTC_TimeTypeDef sTimeStampget;
+
+    /* Get the RTC current Time */
+    HAL_RTC_GetTime(&hrtc, &sTimeStampget, RTC_FORMAT_BIN);
+    /* Get the RTC current Date */
+    HAL_RTC_GetDate(&hrtc, &sTimeStampDateget, RTC_FORMAT_BIN);
+
+    time[0]=sTimeStampDateget.Year;
+    time[1]=sTimeStampDateget.Month;
+    time[2]=sTimeStampDateget.Date;
+    time[3]=sTimeStampget.Hours;
+    time[4]=sTimeStampget.Minutes;
+    time[5]=sTimeStampget.Seconds;
+    time[6]=sTimeStampDateget.WeekDay;
+    
+}
+
+
+
+void hal_rtc_set(uint8_t year , uint8_t mon , uint8_t day ,
+                   uint8_t hour , uint8_t min , uint8_t sec , uint8_t week)
+{
+    RTC_DateTypeDef sDate;
+    RTC_TimeTypeDef sTime;
+
+    sTime.Hours = hour;
+    sTime.Minutes = min;
+    sTime.Seconds = sec;
+//    sTime.DayLightSaving = RTC_DAYLIGHTSAVING_NONE;
+//    sTime.StoreOperation = RTC_STOREOPERATION_RESET;
+    if (HAL_RTC_SetTime(&hrtc, &sTime, RTC_FORMAT_BIN) != HAL_OK)
+    {
+        Error_Handler();
+    }
+
+    sDate.WeekDay = week;
+    sDate.Month = mon;
+    sDate.Date = day;
+    sDate.Year = year;
+
+    if (HAL_RTC_SetDate(&hrtc, &sDate, RTC_FORMAT_BIN) != HAL_OK)
+    {
+        Error_Handler();
+    }
+  
+}
+
+
+
+
 
 /* USER CODE END 1 */
 
