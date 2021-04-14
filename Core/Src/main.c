@@ -151,7 +151,7 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 
 
 
-
+#include "TM1637.h"
 #include "tuyamodeuart.h"
 int main(void)
 {
@@ -189,6 +189,7 @@ int main(void)
   /* USER CODE BEGIN WHILE */
   tuyamode_init();
   SHOWME
+  Time_Display();
   while (1)
   {
     /* USER CODE END WHILE */

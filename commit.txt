@@ -1,3 +1,3 @@
-[defect NO.]IIC第三步增加IIC时许此时连接run一动不动也不亮
+[defect NO.]IIC测试直接成功哈哈
 [modify comment]
 [bin source]0

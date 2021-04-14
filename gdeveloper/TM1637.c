@@ -1,9 +1,8 @@
 #include "TM1637.h"
 #include "main.h"
 
-#define Delay_Us TIM1_Delay
-uint8_t  dpFlag = 0;//主函数有说明 
-unsigned char  Data[]={0x3f,0x06,0x5b,0x4f,0x66,0x6d,0x7d,0x07,0x7f,0x6f};
+#define Delay_Us TIM1_Delay 
+unsigned char  Data[]  ={0x3f,0x06,0x5b,0x4f,0x66,0x6d,0x7d,0x07,0x7f,0x6f};
 unsigned char  DataDp[]={0xbf,0x86,0xdb,0xcf,0xe6,0xed,0xfd,0x87,0xff,0xef};
 struct {
 	char shi;
@@ -44,7 +43,6 @@ void I2C_Start(void)
 */
 void I2C_stop(void)
 {
-	
     CLK_0;
     Delay_Us(140);
     DIO_0;
@@ -127,14 +125,17 @@ void TM1637_WriteData(unsigned char addr,unsigned char mData)
 */
 void Time_Display(void)
 {
+Hour.shi = 4;
+Hour.ge =  5;
+Min.shi =  6;
+Min.ge =   7;
+
+    
     TM1637_WriteCommand(0x44);
     TM1637_WriteData(0xc0,Data[Hour.shi]);
-    if(dpFlag)
-          TM1637_WriteData(0xc1,DataDp[Hour.ge]);
-    else
-          TM1637_WriteData(0xc1,DataDp[Hour.ge]);
+    TM1637_WriteData(0xc1,DataDp[Hour.ge]);
 
     TM1637_WriteData(0xc2, Data[Min.shi]);
-    TM1637_WriteData(0xc2, Data[Min.ge]);
+    TM1637_WriteData(0xc3, Data[Min.ge]);
     TM1637_WriteCommand(0x8a);
  }
