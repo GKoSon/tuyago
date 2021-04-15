@@ -104,17 +104,17 @@ void production_timeout_handler(void)
 {
 
 	static char cnt =0;
-	if(++cnt==20)
+	if(++cnt==3)
     {
         gkTimer.stop(production_timer);
-        for(int i=0;i<20;i++)
+        for(int i=0;i<3;i++)
         {
            //TIM1_Delay(500);TIM1_Delay(500);//1ms 需要100个
            for(int j=0;j<200;j++)TIM1_Delay(500);
            HAL_GPIO_TogglePin(LED_GPIO_Port, LED_Pin);
         }
     }
-	SHOWME
+	//SHOWME
     HAL_GPIO_TogglePin(LED_GPIO_Port, LED_Pin);
 
 }
@@ -154,6 +154,16 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 #include "gbsprtc.h"
 #include "TM1637.h"
 #include "tuyamodeuart.h"
+
+void rtc_set_aram(void)
+{
+  RTC_AlarmTypeDef sAlarm;
+  sAlarm.Alarm = RTC_ALARM_A;
+  sAlarm.AlarmTime.Hours = 14;
+  sAlarm.AlarmTime.Minutes = 49;
+  sAlarm.AlarmTime.Seconds = 10;
+  HAL_RTC_SetAlarm_IT(&hrtc,&sAlarm,RTC_FORMAT_BIN); 
+}
 int main(void)
 {
   /* USER CODE BEGIN 1 */
@@ -193,6 +203,8 @@ int main(void)
   SHOWME
   Time_Display();
   test_rtc();
+  __HAL_RTC_SECOND_ENABLE_IT(&hrtc,RTC_IT_SEC); //开启秒中断 HAL_RTCEx_RTCEventCallback
+  rtc_set_aram();
   while (1)
   {
     /* USER CODE END WHILE */

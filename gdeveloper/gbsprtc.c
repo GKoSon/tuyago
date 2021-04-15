@@ -216,16 +216,8 @@ void rtc_stamp_to_time(rtcTimeType *time ,uint32_t unix_stamp)
 }
 
 
-void HAL_RTC_AlarmAEventCallback(RTC_HandleTypeDef *hrtc)
-{
-		printf("Rtc alarm\r\n");
-		printf("Rtc alarm\r\n");
-		while(1);
-}
-
-void rtc_alarm_callback( void)
-{
-
+void HAL_RTC_AlarmAEventCallback(RTC_HandleTypeDef *hrtc){
+	printf("HAL_RTC_AlarmAEventCallback!!!\n");
 }
 
 void rtc_set_time_form_stamp( uint32_t unix_stamp)

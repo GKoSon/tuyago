@@ -25,8 +25,6 @@ typedef struct
     void        (*stamp_to_time)            (rtcTimeType *time ,uint32_t unix_stamp);
 }rtcType;
 
-extern void rtc_alarm_callback( void);
-
 extern rtcType  rtc;
 
 void test_rtc(void);

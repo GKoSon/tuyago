@@ -125,10 +125,10 @@ void TM1637_WriteData(unsigned char addr,unsigned char mData)
 */
 void Time_Display(void)
 {
-Hour.shi = 4;
-Hour.ge =  5;
-Min.shi =  6;
-Min.ge =   7;
+Hour.shi = 1;
+Hour.ge =  2;
+Min.shi =  3;
+Min.ge =   4;
 
     
     TM1637_WriteCommand(0x44);
