@@ -243,6 +243,7 @@ rtcType    rtc=
 
 void test_rtc(void)
 {
+#if 0    
 	for(char i=0;i<2;i++)
 	{
 			//1--获得时间错
@@ -266,4 +267,7 @@ void test_rtc(void)
             //4设置时间
 			rtc.set_time_form_stamp(stamp);	
 	}
+#endif
+//设置当前2021-04-15 10:50:00  https://tool.lu/timestamp/
+rtc.set_time_form_stamp(1618455000);	
 }

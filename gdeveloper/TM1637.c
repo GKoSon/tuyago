@@ -125,10 +125,10 @@ void TM1637_WriteData(unsigned char addr,unsigned char mData)
 */
 void Time_Display(void)
 {
-Hour.shi = 1;
-Hour.ge =  2;
-Min.shi =  3;
-Min.ge =   4;
+//Hour.shi = 1;
+//Hour.ge =  2;
+//Min.shi =  3;
+//Min.ge =   4;
 
     
     TM1637_WriteCommand(0x44);
@@ -139,3 +139,27 @@ Min.ge =   4;
     TM1637_WriteData(0xc3, Data[Min.ge]);
     TM1637_WriteCommand(0x8a);
  }
+
+ 
+
+
+void HAL_RTCEx_RTCEventCallback(RTC_HandleTypeDef *hrtc){
+    RTC_DateTypeDef GetDate;
+    RTC_TimeTypeDef GetTime;
+    static char oldmin=0;
+    HAL_RTC_GetTime(hrtc,&GetTime,RTC_FORMAT_BIN);
+    HAL_RTC_GetDate(hrtc,&GetDate,RTC_FORMAT_BIN);
+    
+    Hour.shi = GetTime.Hours/10;
+    Hour.ge =  GetTime.Hours%10;
+    Min.shi =  GetTime.Minutes/10;
+    Min.ge =   GetTime.Minutes%10;  
+    if(oldmin != Min.ge  || oldmin==0) 
+    {    
+    Time_Display();
+    oldmin = Min.ge;
+    }
+//	printf("Date:%02d-%02d-%02d\r\n",2000+GetDate.Year,GetDate.Month,GetDate.Date);
+//	printf("Time:%02d:%02d:%02d\r\n",GetTime.Hours,GetTime.Minutes,GetTime.Seconds);
+//	printf("\r\n");	
+}

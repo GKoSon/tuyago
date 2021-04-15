@@ -182,16 +182,16 @@ void hal_rtc_set(uint8_t year , uint8_t mon , uint8_t day ,
 }
 
 
- RTC_DateTypeDef GetDate;
- RTC_TimeTypeDef GetTime;
+//RTC_DateTypeDef GetDate;
+//RTC_TimeTypeDef GetTime;
 
-void HAL_RTCEx_RTCEventCallback(RTC_HandleTypeDef *hrtc){
-	HAL_RTC_GetTime(hrtc,&GetTime,RTC_FORMAT_BIN);
-	HAL_RTC_GetDate(hrtc,&GetDate,RTC_FORMAT_BIN);
-	printf("Date:%02d-%02d-%02d\r\n",2000+GetDate.Year,GetDate.Month,GetDate.Date);
-	printf("Time:%02d:%02d:%02d\r\n",GetTime.Hours,GetTime.Minutes,GetTime.Seconds);
-	printf("\r\n");	
-}
+//void HAL_RTCEx_RTCEventCallback(RTC_HandleTypeDef *hrtc){
+//	HAL_RTC_GetTime(hrtc,&GetTime,RTC_FORMAT_BIN);
+//	HAL_RTC_GetDate(hrtc,&GetDate,RTC_FORMAT_BIN);
+//	printf("Date:%02d-%02d-%02d\r\n",2000+GetDate.Year,GetDate.Month,GetDate.Date);
+//	printf("Time:%02d:%02d:%02d\r\n",GetTime.Hours,GetTime.Minutes,GetTime.Seconds);
+//	printf("\r\n");	
+//}
 
 
 /* USER CODE END 1 */
